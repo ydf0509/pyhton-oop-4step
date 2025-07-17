@@ -33,7 +33,7 @@ python 万能通用 oop面向对象编程四步转化公式，面向过程转面
 虽然这是我自己亲自写得36个python文件例子，但介绍23种设计模式的博客 教程 网站文档 烂大街了，毫不稀奇。 
 
 但是这个项目里面介绍的 oop四部转化公式，是项目最重要的部分，没有任何人是我这么总结如何写oop代码的，学校老师和书本只会教你背诵
-封装 继承 多态 这几个词语本身.你只会看到下面这段类似的话:
+封装 继承 多态 高内聚 低耦合 这几个词语本身.你只会看到下面这段类似的话:
 
 
 **面向对象编程（OOP）** 是一种以**对象**为核心的编程范式，将数据（属性）和操作（方法）封装成类，通过**继承**实现代码复用，**多态**实现灵活扩展。  适用于复杂系统（如游戏、GUI），代表语言：Java、C++、Python。
@@ -52,7 +52,8 @@ python 万能通用 oop面向对象编程四步转化公式，面向过程转面
 
 
 
-然后呢，你背诵上面了这段空洞理论的话，并没有什么作用，因为话术很空洞很虚幻，说了好像又什么都没说，无法有固定实操套路落地，没有给你实操步骤，也没有给你具体例子比较面向过程，没有比较根本原因为什么需要oop。
+然后呢，你背诵上面了这段空洞理论的话，并没有什么作用，因为话术很空洞很虚幻，说了好像又什么都没说,你脑袋一片浆糊，  
+无法有固定实操套路落地，没有给你实操步骤，也没有给你具体例子比较面向过程，没有比较根本原因为什么需要oop。
 
 
 
@@ -226,11 +227,15 @@ oop写代码后，类的每个对象的方法访问和修改实例属性，就�
 写新文件要想破头皮三天三夜才能开始下笔。
 ```
 
-# 5【重要】使用三种代码设计思路写代码模拟人 吃喝拉撒导致身高体重变化。（具体例子，产生强烈对比）
+# 5【重要】使用四种代码设计思路写代码模拟人 吃喝拉撒导致身高体重变化。（具体例子，产生强烈对比）
 
 **代码体验分为两部分，第一部分是作者自己封装公共代码时候是否爽快容易扩展维护；第二部分是别人调用你封装的公共包是否感觉爽快好用。**
 
-**三个写法思路分别是： 封装痛苦，调用更苦      封装爽快，调用更爽        封装爽快，调用痛苦**   
+**四个写法思路分别是： 
+1. 封装痛苦，调用更苦      
+2. 封装爽快，调用更爽        
+3. 封装爽快，调用痛苦
+4. 封装痛苦，调用更苦,外表唬人**   
 
 情不自禁纯粹极端面向过程编程还是c语言中毒了，从来都不使用面向对象，不用提设计模式。
 
@@ -404,7 +409,74 @@ if __name__ == "__main__":
 ```
 
 
-## 5.4 鼓励面向过程工程师在脑子里打草稿使用5.3的写法，然后使用4步走转化公式，转化成oop写法。
+## 5.4 演示最无能的 废物class类 ,实质是面向过程编程写法 (封装痛苦，调用更苦,外表唬人)
+
+写了class类,但空有其表,实际上是100%极端面向过程的写法.
+
+```python
+class Person:
+    """
+    废物类示例：虽然用了class和实例方法，但疯狂传参和return
+    完全违背了面向对象的封装原则，空有其表！
+    """
+    
+    def eat(self, name, height, weight, food_weight):
+        """吃饭：疯狂传参，还要return一堆变量"""
+        new_weight = weight + food_weight
+        new_height = height + food_weight * 0.01
+        print(f"{name} 吃了 {food_weight} 千克食物，体重: {new_weight} 千克，身高: {new_height} 厘米")
+        return name, new_height, new_weight  # 疯狂return！
+    
+    def pee(self, name, height, weight, pee_weight):
+        """拉尿：还是疯狂传参和return"""
+        if pee_weight > weight:
+            pee_weight = weight
+        new_weight = weight - pee_weight
+        print(f"{name} 拉了 {pee_weight} 千克尿，体重: {new_weight} 千克，身高: {height} 厘米")
+        return name, height, new_weight  # 继续疯狂return！
+
+# 测试代码 - 这种写法简直是灾难！
+if __name__ == "__main__":
+    person = Person()  # 创建了实例，但毫无意义
+    
+    # 小明的数据要手动维护
+    ming_name = "小明"
+    ming_height = 170.0
+    ming_weight = 60.0
+    
+    # 每次调用都要传一堆参数，还要接收一堆返回值
+    ming_name, ming_height, ming_weight = person.eat(ming_name, ming_height, ming_weight, 2.0)
+    ming_name, ming_height, ming_weight = person.pee(ming_name, ming_height, ming_weight, 0.5)
+    
+    print(f"小明最终状态：身高 {ming_height} 厘米，体重 {ming_weight} 千克")
+    
+    # 小红的数据也要手动维护
+    hong_name = "小红"
+    hong_height = 160.0
+    hong_weight = 50.0
+    
+    # 又是疯狂传参和接收返回值
+    hong_name, hong_height, hong_weight = person.eat(hong_name, hong_height, hong_weight, 1.5)
+    hong_name, hong_height, hong_weight = person.pee(hong_name, hong_height, hong_weight, 0.3)
+    
+    print(f"小红最终状态：身高 {hong_height} 厘米，体重 {hong_weight} 千克")
+    
+    # 这种写法的问题：
+    # 1. 虽然用了class，但完全没有封装性
+    # 2. 每个方法都要传入所有状态参数
+    # 3. 每个方法都要return所有状态变量
+    # 4. 调用者需要手动维护所有状态
+    # 5. 代码冗余，容易出错
+    # 6. 完全违背了面向对象的设计原则
+    # 这就是典型的"穿着西装的农民工"！
+```
+
+
+**如果你按照oop四步走转化公式，把核心第0步全局变量多多益善省了,只是按照后三步骤机械的把模块降为类,把函数降为方法,**
+**那你就会写出废物滑稽面向过程的类,压根不是真oop,只能吓唬小白说自己是面向对象编程.**
+
+
+## 5.5 鼓励面向过程工程师在脑子里打草稿使用5.3的写法，然后使用4步走转化公式，转化成oop写法。
 
 文章第三章介绍了万能的oop四步走转化公式，你可以在脑子里打草稿使用5.3的写法，然后使用4步走转化公式，转化成oop写法。
 
